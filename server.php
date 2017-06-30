@@ -68,7 +68,7 @@ $options3 = array(
   )
 );
 
-$array3 = file_get_contents("http://173.230.136.12:8680/soapbox-race-core/Engine.svc/GetServerInformation?format=json", false, stream_context_create($options2));
+$array3 = file_get_contents("http://173.230.136.12:8680/soapbox-race-core/Engine.svc/GetServerInformation?format=json", false, stream_context_create($options3));
 
 $json_a=json_decode($array3,true);
 
