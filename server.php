@@ -57,8 +57,8 @@ $RussianregisteredUsers = $json_a['numberOfRegistered'];
 $RussianonlineUsers = $json_a['onlineNumber'];
 
 $json_url3 = "http://173.230.136.12:8680/soapbox-race-core/Engine.svc/GetServerInformation";
-$json3 = file_get_contents($json_url2);
-$data3 = json_decode($json2, TRUE);
+$json3 = file_get_contents($json_url3);
+$data3 = json_decode($json3, TRUE);
 
 $options3 = array(
   'http'=>array(
