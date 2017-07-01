@@ -1,0 +1,14 @@
+{
+	"messageSrv": "Closed beta server for developers, youtubers and testers",
+	"homePageUrl": "https://soapboxrace.world/",
+	"facebookUrl": "https://www.facebook.com/SoapBoxRaceWorld/",
+	"discordUrl": "discord-example",
+	"serverName": "SBRW-Closed Beta",
+	"country": "BR",
+	"timezone": -4,
+	"bannerUrl": "banner-example",
+	"adminList": "Nilzao;Leorblx",
+	"ownerList": "Nilzao",
+	"numberOfRegistered": 105,
+	"onlineNumber": 0
+}
