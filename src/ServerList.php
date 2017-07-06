@@ -14,46 +14,46 @@ class ServerList
      */
     public static function getServerObjectList()
     {
-        $fileTime = filemtime(self::$tmpFilePath) + 60;
+        $srvArrLst = array();
+        $fileTime = filemtime(self::$tmpFilePath) + 120;
         $date = new DateTime();
         $actualTime = $date->getTimestamp();
         if ($actualTime > $fileTime) {
             $data = file_get_contents("https://raw.githubusercontent.com/nilzao/soapbox-race-hill/master/serverlist-v2.txt");
             file_put_contents(self::$tmpFilePath, $data);
-            self::writeJson();
+            $srvArrLst = self::getServerArrayObject(true);
         } else {
-            self::countServerListSize();
-        }
-        $srvArrLst = array();
-        for ($i = 0; $i < self::$serverListSize; $i ++) {
-            $serverTest = file_get_contents("tmp/{$i}.json");
-            $srvArrLst[] = new ServerObj("test" . $i, "http://localhost:8680", $serverTest);
+            $srvArrLst = self::getServerArrayObject();
         }
         return $srvArrLst;
     }
 
-    private static function countServerListSize()
+    /**
+     *
+     * @return ServerObj[]
+     */
+    private static function getServerArrayObject($write = false)
     {
-        $handle = fopen(self::$tmpFilePath, "r");
-        while (($line = fgets($handle)) !== false) {
-            self::$serverListSize ++;
-        }
-        fclose($handle);
-    }
-
-    private static function writeJson()
-    {
+        $srvArrLst = array();
         self::$serverListSize = 0;
         $handle = fopen(self::$tmpFilePath, "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 $serverInfo = explode(";", $line);
-                $serverUrl = trim($serverInfo[1]) . "/soapbox-race-core/Engine.svc/GetServerInformation";
-                $jsonInfo = file_get_contents($serverUrl);
-                file_put_contents("tmp/" . self::$serverListSize . ".json", $jsonInfo);
+                $serverName = trim($serverInfo[0]);
+                $serverUrl = trim($serverInfo[1]);
+                $jsonInfo = "";
+                if ($write) {
+                    $jsonInfo = file_get_contents($serverUrl . "/soapbox-race-core/Engine.svc/GetServerInformation");
+                    file_put_contents("tmp/" . self::$serverListSize . ".json", $jsonInfo);
+                } else {
+                    $jsonInfo = file_get_contents("tmp/" . self::$serverListSize . ".json");
+                }
+                $srvArrLst[] = new ServerObj($serverName, $serverUrl, $jsonInfo);
                 self::$serverListSize ++;
             }
             fclose($handle);
         }
+        return $srvArrLst;
     }
 }
